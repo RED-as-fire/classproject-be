@@ -10,13 +10,20 @@ import { Course } from './entities/course.entity';
 export class CourseService {
     constructor(
         @InjectRepository(Course)
-        private courseRepository: Repository<Course>
+        private courseRepository: Repository<Course>,
+        @InjectRepository(Student)
+        private studentRepository: Repository<Student>,
     ) { }
     async create(createCourseDto: CreateCourseDto) {
-
+        const {studentIDs}=createCourseDto;
         const createCourse = this.courseRepository.create({
             ...createCourseDto
         });
+        createCourse.students= [];
+        studentIDs.forEach(async studentId=>{
+            const student = await this.studentRepository.findOne(studentId);
+            createCourse.students.push(student);
+        })
         await this.courseRepository.save(createCourse)
         return createCourse;
     }

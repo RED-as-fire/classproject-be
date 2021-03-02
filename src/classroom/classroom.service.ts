@@ -33,7 +33,7 @@ export class ClassroomService {
         return createClassroom;
     }
 
-    findAll() {
+    async findAll() {
         return this.classRepository.find({ relations: ['course'] });
     }
 
