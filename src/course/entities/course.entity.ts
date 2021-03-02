@@ -1,12 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
 @Entity()
-export class Student {
+export class Course {
     @PrimaryGeneratedColumn()
     id:number
     
     @Column()
-    name:string
+    code:string
+
     @Column()
-    surname:string
+    name:string
 }
+
