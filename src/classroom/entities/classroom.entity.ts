@@ -1,5 +1,6 @@
 import { Course } from "src/course/entities/course.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Student } from "src/student/entities/student.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Classroom {
     @PrimaryGeneratedColumn()
@@ -15,5 +16,10 @@ export class Classroom {
         onDelete:'CASCADE',
     })
     course:Course
+
+    @ManyToMany(() => Student,student=>student.classrooms,{
+        cascade:true
+    })
+    students: Student[]
 }
 

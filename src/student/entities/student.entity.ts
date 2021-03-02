@@ -5,18 +5,22 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "t
 @Entity()
 export class Student {
     @PrimaryGeneratedColumn()
-    id:number
-    
-    @Column()
-    name:string
-    @Column()
-    surname:string
+    id: number
 
-    @ManyToMany(()=>Classroom)
-    @JoinTable()
-    classrooms:Classroom[]
+    @Column()
+    name: string
+    @Column()
+    surname: string
 
-    @ManyToMany(()=>Course)
+    @ManyToMany(() => Classroom,classroom=>classroom.students,{
+        cascade:true
+    })
     @JoinTable()
-    courses:Course[]
+    classrooms: Classroom[]
+
+    @ManyToMany(() => Course,course=>course.students,{
+        cascade:true
+    })
+    @JoinTable()
+    courses: Course[]
 }
