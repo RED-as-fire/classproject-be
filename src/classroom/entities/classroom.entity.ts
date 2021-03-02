@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Course } from "src/course/entities/course.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Classroom {
     @PrimaryGeneratedColumn()
@@ -9,4 +10,10 @@ export class Classroom {
 
     @Column()
     capacity:number
+
+    @ManyToOne(()=>Course,(course:Course)=>course.classrooms,{
+        onDelete:'CASCADE',
+    })
+    course:Course
 }
+
