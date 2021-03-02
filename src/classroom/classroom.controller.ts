@@ -7,9 +7,9 @@ import { UpdateClassroomDto } from './dto/update-classroom.dto';
 export class ClassroomController {
   constructor(private readonly classroomService: ClassroomService) {}
 
-  @Post()
-  create(@Body() createClassroomDto: CreateClassroomDto) {
-    return this.classroomService.create(createClassroomDto);
+  @Post(':id_course')
+  create(@Body() createClassroomDto: CreateClassroomDto, @Param('id_course')id_course:string) {
+    return this.classroomService.create(createClassroomDto,+id_course);
   }
 
   @Get()

@@ -31,7 +31,7 @@ import { Course } from './course/entities/course.entity';
 
             password: process.env.DB_password,
 
-            database: 'architetturaSoftware',
+            database: 'architetturasoftware',
 
             entities: [Student,Classroom,Course],
 

@@ -15,9 +15,7 @@ export class Course {
     @OneToMany(()=>Classroom,(classroom:Classroom)=>classroom.course)
     classrooms:Classroom[];
 
-    @ManyToMany(() => Student,student=>student.courses,{
-        cascade:true
-    })
+    @ManyToMany(() => Student,student=>student.courses)
     students: Student[]
 }
 

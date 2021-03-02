@@ -17,7 +17,7 @@ export class ClassroomService {
     ) { }
     async create(createClassroomDto: CreateClassroomDto, id: number) {
         const course = await this.courseRepository.findOne({ id });
-        const createClassroom = this.classRepository.create({
+        const createClassroom =await this.classRepository.create({
             ...createClassroomDto,
             course: course
         });
