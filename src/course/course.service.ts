@@ -8,39 +8,47 @@ import { Course } from './entities/course.entity';
 
 @Injectable()
 export class CourseService {
-    constructor(
-        @InjectRepository(Course)
-        private courseRepository: Repository<Course>,
-        @InjectRepository(Student)
-        private studentRepository: Repository<Student>,
-    ) { }
-    async create(createCourseDto: CreateCourseDto) {
-        const {studentIDs}=createCourseDto;
-        const createCourse = this.courseRepository.create({
-            ...createCourseDto
-        });
-        createCourse.students= [];
-        studentIDs.forEach(async studentId=>{
-            const student = await this.studentRepository.findOne(studentId);
-            createCourse.students.push(student);
-        })
-        await this.courseRepository.save(createCourse)
-        return createCourse;
-    }
+  constructor(
+    @InjectRepository(Course)
+    private courseRepository: Repository<Course>,
+    @InjectRepository(Student)
+    private studentRepository: Repository<Student>,
+  ) {}
+  async create(createCourseDto: CreateCourseDto) {
+    const { studentIDs } = createCourseDto;
+    const createCourse = this.courseRepository.create({
+      ...createCourseDto,
+    });
+    createCourse.students = [];
 
-    findAll() {
-        return this.courseRepository.find();
+    for (const studentId of studentIDs) {
+      const student = await this.studentRepository.findOne(studentId);
+      createCourse.students.push(student);
     }
+    await this.courseRepository.save(createCourse);
+    return createCourse;
+  }
 
-    findOne(id: number) {
-        return this.courseRepository.findOne(id);
-    }
+  findAll() {
+    return this.courseRepository.find({
+      relations: ['students'],
+    });
+  }
 
-    update(id: number, updateCourseDto: UpdateCourseDto) {
-        return `This action updates a #${id} course`;
-    }
+  findOne(id: number) {
+    return this.courseRepository.findOne({
+      relations: ['students'],
+      where: {
+        id,
+      },
+    });
+  }
 
-    remove(id: number) {
-        return `This action removes a #${id} course`;
-    }
+  update(id: number, updateCourseDto: UpdateCourseDto) {
+    return `This action updates a #${id} course`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} course`;
+  }
 }
