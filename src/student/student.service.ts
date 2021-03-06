@@ -13,9 +13,10 @@ export class StudentService {
     @InjectRepository(Course)
     private courseRepository: Repository<Course>,
   ) {}
-  create(createStudentDto: CreateStudentDto) {
+  async create(createStudentDto: CreateStudentDto) {
     const createStudent = this.studentRepository.create(createStudentDto);
-    return this.studentRepository.save(createStudent); //save salva entità nel DB
+    const savedStudent = await this.studentRepository.save(createStudent); //save salva entità nel DB
+    return await this.findOne(savedStudent.id);
   }
 
   async findAll() {
@@ -34,8 +35,9 @@ export class StudentService {
         HttpStatus.FORBIDDEN,
       );
     }
-    return await this.studentRepository.findOne(id, {
-      where: [{ id: id }],
+    return await this.studentRepository.find({
+      relations: ['courses'],
+      where: { id: id },
     });
   }
 
