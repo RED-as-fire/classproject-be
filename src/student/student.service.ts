@@ -41,8 +41,19 @@ export class StudentService {
     });
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: number, updateStudentDto: UpdateStudentDto) {
+    if (!(await this.studentRepository.findOne(id))) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `no student found for provided id:${id}`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    await this.studentRepository.update(id, updateStudentDto);
+    return this.findOne(id);
   }
 
   async remove(id: number) {

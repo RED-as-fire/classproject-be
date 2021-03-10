@@ -1,2 +1,4 @@
-
-export class UpdateStudentDto {}
+export class UpdateStudentDto {
+  name: string;
+  surname: string;
+}
